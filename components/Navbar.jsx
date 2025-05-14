@@ -80,7 +80,7 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full bg-black z-50 text-white pr-6 xl:pr:0 transition-all duration-300 ${scrolled ? 'shadow-md shadow-gray-800' : ''}`}
+            className={`fixed top-0 left-0 w-full bg-black z-50 text-white pr-6 xl:pr:0 transition-all duration-300 : ''}`}
             onMouseLeave={closeAllDropdowns}
         >
             <div className="max-w-7xl mx-auto">
