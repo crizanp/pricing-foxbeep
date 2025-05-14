@@ -5,7 +5,7 @@ import { Clock, Star, Check, ArrowRight } from 'lucide-react';
 
 const PackageCard = ({ title, subtitle, price, image, features = [], deliveryTime = "3-5 days", rating = 4.5 }) => {
   return (
-    <div className="bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-800 flex flex-col h-full group">
+    <div className="bg-gray-900 text-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-800 flex flex-col h-full group">
       {/* Card Image */}
       <div className="relative h-48 w-full overflow-hidden">
         {image ? (
@@ -52,14 +52,14 @@ const PackageCard = ({ title, subtitle, price, image, features = [], deliveryTim
       <div className="p-5 pt-0 border-t border-gray-800 mt-auto">
         <div className="flex items-center justify-between my-3">
           <div>
-            <span className="text-2xl font-bold text-purple-400 py-4">{price}</span>
+            <span className="text-2xl font-bold  py-4">{price}</span>
           </div>
         </div>
         
         <div className="flex space-x-2">
           <Link
             href={`/details/${encodeURIComponent(title)}`}
-            className="flex-1 bg-purple-700 hover:bg-purple-800 text-white text-center py-3 px-4 rounded-lg transition-colors flex items-center justify-center font-medium"
+            className="flex-1 bg-purple-900 hover:bg-purple-800 text-white text-center py-3 px-4 rounded-lg transition-colors flex items-center justify-center font-medium"
           >
             View Details
           </Link>
