@@ -114,7 +114,7 @@ const PackageDetailPage = ({ packageData }) => {
   }
   
   return (
-    <div className=' bg-black'>
+    <div className=' bg-black '>
     <div className="container mx-auto max-w-7xl px-4 pt-12 bg-black text-gray-300">
       {/* Back Button */}
       <Link href="/" className="inline-flex items-center text-purple-400 hover:text-purple-300 mb-4 transition-colors">
