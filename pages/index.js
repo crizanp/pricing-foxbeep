@@ -144,7 +144,7 @@ export default function PricingPage() {
       </Head>
       <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white">
+      <div className="min-h-screen bg-black text-gray-200">
         <div className="container mx-auto pt-16 pb-10 px-4">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar - takes 1/4 of screen on large screens */}
@@ -160,24 +160,51 @@ export default function PricingPage() {
             <div className="lg:col-span-3">
               {/* Page header with breadcrumbs */}
               <div className="mb-8">
-                <div className="flex items-center text-sm text-gray-500 mb-2">
-                  <span className=" ">Home</span>
+                <div className="flex items-center text-sm text-gray-400 mb-2">
+                  <span className="hover:text-purple-400 transition-colors cursor-pointer">Home</span>
 
                   {activeCategory && (
                     <>
-                      <ChevronRight size={16} className="mx-1" />
-                      <span className="">{getActiveCategoryName()}</span>
+                      <ChevronRight size={16} className="mx-1 text-gray-500" />
+                      <span className="hover:text-purple-400 transition-colors cursor-pointer">{getActiveCategoryName()}</span>
                     </>
                   )}
                   {activeSubcategory && (
                     <>
-                      <ChevronRight size={16} className="mx-1" />
-                      <span className="text-purple-600">{getActiveSubcategoryName()}</span>
+                      <ChevronRight size={16} className="mx-1 text-gray-500" />
+                      <span className="text-purple-400">{getActiveSubcategoryName()}</span>
                     </>
                   )}
                 </div>
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">{getHeaderTitle()}</h1>
-                {/* <p className="text-gray-600">{getHeaderDescription()}</p> */}
+                <h1 className="text-3xl font-bold text-white mb-2">{getHeaderTitle()}</h1>
+                <p className="text-gray-400">{getHeaderDescription()}</p>
+              </div>
+
+              {/* Filter and Sort Controls */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 bg-gray-900 p-4 rounded-lg border border-gray-800">
+                <div className="mb-4 sm:mb-0">
+                  <button 
+                    onClick={() => setIsFilterOpen(!isFilterOpen)} 
+                    className="flex items-center text-gray-300 hover:text-purple-400 transition-colors"
+                  >
+                    <Filter size={18} className="mr-2" />
+                    <span>Filter</span>
+                  </button>
+                </div>
+                
+                <div className="flex space-x-2">
+                  <select 
+                    value={sortBy} 
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="bg-gray-800 border border-gray-700 text-gray-300 rounded-md px-3 py-1.5 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  >
+                    <option value="default">Default Sorting</option>
+                    <option value="price-low-high">Price: Low to High</option>
+                    <option value="price-high-low">Price: High to Low</option>
+                    <option value="latest">Latest</option>
+                    <option value="oldest">Oldest</option>
+                  </select>
+                </div>
               </div>
 
               {displayedPackages.length > 0 ? (
@@ -193,22 +220,22 @@ export default function PricingPage() {
                   ))}
                 </div>
               ) : (
-                <div className="bg-white p-8 rounded-2xl shadow-xl text-center border-2 border-purple-100">
-                  <Package size={48} className="text-purple-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">No packages found</h3>
-                  <p className="text-gray-500">We couldn&rsquo;t find any packages matching your criteria.</p>
+                <div className="bg-gray-900 p-8 rounded-2xl border border-gray-800 shadow-xl text-center">
+                  <Package size={48} className="text-purple-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">No packages found</h3>
+                  <p className="text-gray-400">We couldn&apos;t find any packages matching your criteria.</p>
                 </div>
               )}
 
               {/* Pagination - can be added if needed */}
               {displayedPackages.length > 12 && (
                 <div className="flex justify-center mt-10">
-                  <nav className="inline-flex rounded-lg shadow-sm">
-                    <button className="px-4 py-2 bg-white border border-purple-200 rounded-l-lg text-purple-600 hover:bg-purple-50">Previous</button>
+                  <nav className="inline-flex rounded-lg shadow-lg">
+                    <button className="px-4 py-2 bg-gray-900 border border-gray-700 rounded-l-lg text-gray-300 hover:bg-gray-800 transition-colors">Previous</button>
                     <button className="px-4 py-2 bg-purple-600 border border-purple-600 text-white">1</button>
-                    <button className="px-4 py-2 bg-white border border-purple-200 text-purple-600 hover:bg-purple-50">2</button>
-                    <button className="px-4 py-2 bg-white border border-purple-200 text-purple-600 hover:bg-purple-50">3</button>
-                    <button className="px-4 py-2 bg-white border border-purple-200 rounded-r-lg text-purple-600 hover:bg-purple-50">Next</button>
+                    <button className="px-4 py-2 bg-gray-900 border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors">2</button>
+                    <button className="px-4 py-2 bg-gray-900 border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors">3</button>
+                    <button className="px-4 py-2 bg-gray-900 border border-gray-700 rounded-r-lg text-gray-300 hover:bg-gray-800 transition-colors">Next</button>
                   </nav>
                 </div>
               )}

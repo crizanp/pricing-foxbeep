@@ -62,10 +62,10 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
     return (
         <>
             {/* Mobile toggle button - fixed at the bottom */}
-            <div className="lg:hidden fixed bottom-4 right-4 z-50">
+            <div className="lg:hidden fixed bottom-4 right-4 z-50 hide-scrollbar">
                 <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="bg-purple-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center hover:bg-purple-700 transition"
+                    className="bg-purple-700 text-white p-3 rounded-full shadow-lg flex items-center justify-center hover:bg-purple-600 transition"
                     aria-label={isOpen ? "Close categories menu" : "Open categories menu"}
                 >
                     {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -75,14 +75,14 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
             {/* Overlay for mobile */}
             {isOpen && isMobile && (
                 <div
-                    className="fixed inset-0  bg-opacity-50 z-40"
+                    className="fixed inset-0 bg-black bg-opacity-70 z-40"
                     onClick={() => setIsOpen(false)}
                 />
             )}
 
             {/* Sidebar container with conditional positioning */}
             <div
-                className={`bg-white rounded-2xl shadow-xl border border-purple-100 transition-all duration-300 ease-in-out
+                className={`bg-gray-900 rounded-2xl shadow-xl border border-gray-800 transition-all duration-300 ease-in-out hide-scrollbar
                     ${isMobile
                         ? `fixed bottom-0 left-0 right-0 z-40 max-h-[80vh] overflow-y-auto
                            ${isOpen ? 'translate-y-0' : 'translate-y-full'}`
@@ -91,29 +91,26 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
             >
                 <div className="p-6">
                     {/* Header section */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center">
-                            <Package className="text-purple-600 mr-2" size={24} />
-                            <h2 className="text-xl font-bold text-gray-800">Packages</h2>
+                            <Package className="text-purple-400 mr-2" size={24} />
+                            <h2 className="text-xl font-bold text-white">Packages</h2>
                         </div>
                         {isMobile && (<button onClick={() => setIsOpen(false)} aria-label="Close menu">
-                                <X size={24} className="text-gray-600" />
+                                <X size={24} className="text-gray-400 hover:text-white transition-colors" />
                             </button>
                         )}
                     </div>
 
-                    {/* Decorative divider */}
-                    <div className="h-0 w-full bg-gradient-to-r from-purple-200 via-purple-400 to-purple-200 mb-6 rounded-full"></div>
-
                     {/* Search box */}
                     <div className="relative mb-6">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Search className="text-gray-400" size={20} />
+                            <Search className="text-gray-500" size={20} />
                         </div>
                         <input
                             type="text"
                             placeholder="Search categories..."
-                            className="w-full pl-10 p-3 border border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-gray-700"
+                            className="w-full pl-10 p-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-gray-200 placeholder-gray-500"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -122,23 +119,23 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
                                 onClick={() => setSearchTerm('')}
                                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                             >
-                                <X className="text-gray-400 hover:text-gray-600" size={20} />
+                                <X className="text-gray-500 hover:text-gray-300" size={20} />
                             </button>
                         )}
                     </div>
 
                     {/* Categories list with animation */}
-                    <div className="space-y-0 overflow-y-auto max-h-[60vh] pr-2">
+                    <div className="space-y-0 overflow-y-auto max-h-[60vh] pr-2 hide-scrollbar">
                         {filteredCategories.length > 0 ? (
                             filteredCategories.map((category) => (
-                                <div key={category.id} className="border-b border-purple-100 last:border-b-0">
+                                <div key={category.id} className="border-b border-gray-800 last:border-b-0">
                                     {/* Main Category */}
                                     <div className="py-3 flex items-center justify-between group">
                                         <Link
                                             href={`/category/${category.id}`}
                                             className={`${activeCategory === category.id 
-                                                ? 'text-purple-600 font-semibold' 
-                                                : 'text-gray-700 group-hover:text-purple-500'} 
+                                                ? 'text-purple-400 font-semibold' 
+                                                : 'text-gray-300 group-hover:text-purple-400'} 
                                                 flex-grow transition duration-300 flex items-center`}
                                             onClick={(e) => {
                                                 if (isMobile && category.hasSubcategories) {
@@ -149,7 +146,7 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
                                         >
                                             <span className="mr-2">{category.name}</span>
                                             {category.hasSubcategories && (
-                                                <span className="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">
+                                                <span className="text-xs bg-gray-800 text-purple-400 px-2 py-0.5 rounded-full">
                                                     {category.subcategories.length}
                                                 </span>
                                             )}
@@ -158,7 +155,7 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
                                         {category.hasSubcategories && (
                                             <button
                                                 onClick={() => toggleCategory(category.id)}
-                                                className="p-1 text-gray-500 hover:text-purple-500 focus:outline-none"
+                                                className="p-1 text-gray-400 hover:text-purple-400 focus:outline-none"
                                                 aria-label={expandedCategories[category.id] 
                                                     ? "Collapse category" 
                                                     : "Expand category"}
@@ -179,16 +176,16 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
                                             {category.subcategories.map((subcategory) => (
                                                 <div
                                                     key={subcategory.id}
-                                                    className={`py-3 pl-6 border-t border-purple-50 
+                                                    className={`py-3 pl-6 border-t border-gray-800 
                                                         ${activeSubcategory === subcategory.id 
-                                                            ? 'bg-purple-50 rounded-lg' 
-                                                            : 'hover:bg-purple-50/50 rounded-lg'} transition`}
+                                                            ? 'bg-gray-800 rounded-lg' 
+                                                            : 'hover:bg-gray-800/50 rounded-lg'} transition`}
                                                 >
                                                     <Link
                                                         href={`/subcategory/${subcategory.id}`}
                                                         className={`${activeSubcategory === subcategory.id 
-                                                            ? 'text-purple-600 font-medium' 
-                                                            : 'text-gray-600 hover:text-purple-500'} 
+                                                            ? 'text-purple-400 font-medium' 
+                                                            : 'text-gray-400 hover:text-purple-400'} 
                                                             transition duration-300 block`}
                                                         onClick={() => isMobile && setIsOpen(false)}
                                                     >
@@ -201,12 +198,12 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
                                 </div>
                             ))
                         ) : (
-                            <div className="text-center text-gray-500 py-6 bg-purple-50/50 rounded-lg">
-                                <Search className="mx-auto mb-2 text-purple-300" size={24} />
+                            <div className="text-center text-gray-400 py-6 bg-gray-800/50 rounded-lg">
+                                <Search className="mx-auto mb-2 text-purple-500" size={24} />
                                 <p>No categories found</p>
                                 <button 
                                     onClick={() => setSearchTerm('')}
-                                    className="mt-2 text-purple-600 hover:text-purple-700 text-sm font-medium"
+                                    className="mt-2 text-purple-400 hover:text-purple-300 text-sm font-medium"
                                 >
                                     Clear search
                                 </button>
@@ -218,15 +215,15 @@ const Sidebar = ({ categories = [], activeCategory, activeSubcategory }) => {
                     {isMobile && (
                         <div className="mt-6 flex space-x-2">
                             <button
-                                className="flex-1 bg-purple-600 text-white py-3 px-4 rounded-lg 
-                                    hover:bg-purple-700 transition duration-300 flex items-center justify-center font-medium"
+                                className="flex-1 bg-purple-700 text-white py-3 px-4 rounded-lg 
+                                    hover:bg-purple-600 transition duration-300 flex items-center justify-center font-medium"
                                 onClick={() => setIsOpen(false)}
                             >
                                 Apply Filters
                             </button>
                             <button
-                                className="flex-1 bg-gray-100 text-gray-800 py-3 px-4 rounded-lg 
-                                    hover:bg-gray-200 transition duration-300 flex items-center justify-center font-medium"
+                                className="flex-1 bg-gray-800 text-gray-300 py-3 px-4 rounded-lg 
+                                    hover:bg-gray-700 transition duration-300 flex items-center justify-center font-medium"
                                 onClick={() => {
                                     setSearchTerm('');
                                     setIsOpen(false);
