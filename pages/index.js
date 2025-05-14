@@ -145,12 +145,12 @@ export default function PricingPage() {
       <Navbar />
 
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white">
-        <div className="container mx-auto pt-16 pb-10 px-4"> 
+        <div className="container mx-auto pt-16 pb-10 px-4">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar - takes 1/4 of screen on large screens */}
             <div className="lg:col-span-1">
-              <Sidebar 
-                categories={categories} 
+              <Sidebar
+                categories={categories}
                 activeCategory={activeCategory}
                 activeSubcategory={activeSubcategory}
               />
@@ -162,7 +162,7 @@ export default function PricingPage() {
               <div className="mb-8">
                 <div className="flex items-center text-sm text-gray-500 mb-2">
                   <span className=" ">Home</span>
-                  
+
                   {activeCategory && (
                     <>
                       <ChevronRight size={16} className="mx-1" />
@@ -180,7 +180,7 @@ export default function PricingPage() {
                 {/* <p className="text-gray-600">{getHeaderDescription()}</p> */}
               </div>
 
-             {displayedPackages.length > 0 ? (
+              {displayedPackages.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
                   {displayedPackages.map((pkg) => (
                     <PackageCard
@@ -196,10 +196,10 @@ export default function PricingPage() {
                 <div className="bg-white p-8 rounded-2xl shadow-xl text-center border-2 border-purple-100">
                   <Package size={48} className="text-purple-300 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-gray-700 mb-2">No packages found</h3>
-                  <p className="text-gray-500">We couldn't find any packages matching your criteria.</p>
+                  <p className="text-gray-500">We couldn&rsquo;t find any packages matching your criteria.</p>
                 </div>
               )}
-              
+
               {/* Pagination - can be added if needed */}
               {displayedPackages.length > 12 && (
                 <div className="flex justify-center mt-10">
