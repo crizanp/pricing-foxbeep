@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Linkedin, Twitter, Facebook, Globe, ChevronDown, ChevronUp } from 'lucide-react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 export default function Footer() {
     // State for mobile menu toggling
@@ -46,12 +46,11 @@ export default function Footer() {
                     <div className="col-span-1 flex flex-col items-center text-center mb-6 md:mb-0">
                         <div className="mb-2 relative w-34 h-14">
                             <Image
-                                src="/transparentLogo.png"
-                                alt="FoxBeep Logo"
-                                fill
-                                className="object-contain"
-                                priority
-                            />
+  src="/transparentLogo.png"
+  alt="Logo"
+  width={200}
+  height={100}
+/>
                         </div>
                         <p className="text-gray-400 text-xs">© 2025 Foxbeep. All Rights Reserved</p>
                         {/* <div className="flex items-center mt-3 text-xs text-gray-400">

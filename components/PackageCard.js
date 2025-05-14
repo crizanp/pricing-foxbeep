@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { Clock, Star, Check, ArrowRight } from 'lucide-react';
 
 const PackageCard = ({ title, subtitle, price, image, features = [], deliveryTime = "3-5 days", rating = 4.5 }) => {

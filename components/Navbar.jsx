@@ -1,153 +1,188 @@
-import React, { useEffect } from 'react';
-import Head from 'next/head';
-import Navbar from './Navbar';
-import Footer from './home/footer';
+"use client";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ChevronDown, Menu, X } from 'lucide-react';
+import { useSmoothScroll, handleHashScroll } from '../hook/scrolling';
 
-const Layout = ({
-  children,
-  title = 'Build with Purpose | Custom Software Development Company',
-  description = 'Your trusted partner in creating powerful, scalable software solutions across industries like Finance, Healthcare, Education, and Real Estate. We specialize in Web, Mobile, AI, Blockchain, and more.',
-  keywords = 'software development, custom software, web development, mobile apps, AI solutions, blockchain, cloud development, UI/UX design, IT services',
-  ogImage = '/images/logo.jpg',
-  canonical = '',
-  structuredData = null,
-}) => {
-  const canonicalUrl = canonical || process.env.NEXT_PUBLIC_SITE_URL;
+// Categories data imported from external file
+const categories = [
+  {
+    "id": 1,
+    "name": "Design Services",
+    "hasSubcategories": false,
+    "slug": "design-services"
+  },
+  {
+    "id": 2,
+    "name": "Website Services",
+    "hasSubcategories": false,
+    "slug": "website-services"
+  },
+  {
+    "id": 3,
+    "name": "Website Maintenance",
+    "hasSubcategories": false,
+    "slug": "website-maintenance"
+  },
+  {
+    "id": 4,
+    "name": "Digital Marketing",
+    "hasSubcategories": false,
+    "slug": "digital-marketing"
+  },
+  {
+    "id": 5,
+    "name": "Social Media Management",
+    "hasSubcategories": false,
+    "slug": "social-media-management"
+  }
+];
 
-  const defaultStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Build with Purpose",
-    "url": process.env.NEXT_PUBLIC_SITE_URL,
-    "logo": `${process.env.NEXT_PUBLIC_SITE_URL}/images/branding/logo.png`,
-    "description": description,
-    "sameAs": [
-      "https://www.linkedin.com/company/your-company",
-      "https://twitter.com/your-company",
-      "https://github.com/your-company"
-    ],
-    "contactPoint": [{
-      "@type": "ContactPoint",
-      "telephone": "+1-800-123-4567",
-      "contactType": "Customer Service",
-      "areaServed": "Worldwide",
-      "availableLanguage": "English"
-    }]
-  };
+const Navbar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState(null);
+    useSmoothScroll();
+    handleHashScroll();
 
-  // Apply dark theme to the document body when component mounts
-  useEffect(() => {
-    document.documentElement.classList.add('dark-theme');
-    document.body.classList.add('bg-black');
-    document.body.classList.add('text-gray-200');
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 20) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
-    // Cleanup function to remove classes if needed
-    return () => {
-      document.documentElement.classList.remove('dark-theme');
-      document.body.classList.remove('bg-black');
-      document.body.classList.remove('text-gray-200');
+    // Transform the categories data to match the navItems structure
+    const navItems = categories.map(category => ({
+        name: category.name,
+        href: `/category/${category.id}`,
+        hasDropdown: category.hasSubcategories,
+        id: category.id
+    }));
+    
+    const toggleDropdown = (index) => {
+        if (activeDropdown === index) {
+            setActiveDropdown(null);
+        } else {
+            setActiveDropdown(index);
+        }
     };
-  }, []);
 
-  return (
-    <>
-      <Head>
-        {/* Basic Meta Tags */}
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
+    const closeAllDropdowns = () => {
+        setActiveDropdown(null);
+    };
 
-        {/* Canonical URL */}
-        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    return (
+        <nav
+            className={`fixed top-0 left-0 w-full bg-black z-50 text-white pr-6 xl:pr:0 transition-all duration-300 ${scrolled ? 'shadow-md shadow-gray-800' : ''}`}
+            onMouseLeave={closeAllDropdowns}
+        >
+            <div className="max-w-7xl mx-auto">
+                <div className="flex justify-between items-center h-16 md:h-18 lg:h-20">
+                    {/* Logo */}
+                    <div className="flex items-left">
+                        <Link href="/" className="flex items-left" onClick={closeAllDropdowns}>
+                            <div className="relative w-32 h-12 md:w-36 md:h-14 lg:w-40 lg:h-30">
+                                <Image
+                                    src="/logo.png"
+                                    alt="Logo"
+                                    fill
+                                    className="object-contain brightness-150 invert"
+                                    priority
+                                />
+                            </div>
+                        </Link>
+                    </div>
 
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={ogImage} />
+                    {/* Desktop Navigation - hidden on mobile and lg, shown on xl and up */}
+                    <div className="hidden xl:flex items-center justify-end space-x-1 md:space-x-2 lg:space-x-4 xl:space-x-6 flex-1">
+                        {navItems.map((item, index) => (
+                            <div key={item.id} className="relative group">
+                                <Link
+                                    href={item.href}
+                                    className={`font-medium text-xs md:text-sm lg:text-base whitespace-nowrap hover:text-purple-400 transition-colors duration-200 flex items-center py-2 px-1 md:px-2 ${item.active ? 'text-purple-400' : 'text-gray-300'}`}
+                                    onMouseEnter={() => item.hasDropdown && setActiveDropdown(index)}
+                                >
+                                    {item.name}
+                                    {item.hasDropdown && (
+                                        <ChevronDown size={14} className="ml-1 transition-transform group-hover:rotate-180 duration-200" />
+                                    )}
+                                </Link>
 
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={canonicalUrl} />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={ogImage} />
+                                {item.hasDropdown && activeDropdown === index && (
+                                    <div className="fixed left-0 w-full bg-gray-900 border-t border-gray-800 shadow-lg shadow-black/50 z-20"
+                                        style={{ top: '5rem' }}>
+                                        <div className="container mx-auto py-4 md:py-6 lg:py-8 px-4">
+                                            {/* Placeholder for dropdown content */}
+                                            <p className="text-sm text-gray-400">Subcategories for {item.name} would appear here</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
 
-        {/* Favicons */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png" />
-        <link rel="manifest" href="/images/favicon.png" />
-        <link rel="mask-icon" href="/images/favicon.png" color="#5bbad5" />
-        <meta name="msapplication-TileColor" content="#121212" />
-        <meta name="theme-color" content="#000000" />
+                    {/* Mobile menu button - visible until xl breakpoint */}
+                    <div className="xl:hidden flex items-center">
+                        <button
+                            className="text-gray-300 hover:text-purple-400 focus:outline-none"
+                            onClick={() => setIsOpen(!isOpen)}
+                        >
+                            {isOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData || defaultStructuredData),
-          }}
-        />
-
-        {/* Dark Theme Custom CSS */}
-        <style jsx global>{`
-          :root {
-            --primary-color: #0d6efd;
-            --secondary-color: #6c757d;
-            --background-color: #000000;
-            --surface-color: #121212;
-            --text-primary: #f8f9fa;
-            --text-secondary: #adb5bd;
-            --border-color: #2d2d30;
-          }
-          
-          .dark-theme {
-            color-scheme: dark;
-          }
-          
-          body {
-            background-color: var(--background-color);
-            color: var(--text-primary);
-          }
-          
-          a {
-            color: var(--primary-color);
-          }
-          
-          a:hover {
-            color: #0b5ed7;
-          }
-          
-          .card, .bg-light {
-            background-color: var(--surface-color) !important;
-            border-color: var(--border-color) !important;
-          }
-          
-          .border {
-            border-color: var(--border-color) !important;
-          }
-          
-          .text-dark {
-            color: var(--text-primary) !important;
-          }
-          
-          .text-secondary {
-            color: var(--text-secondary) !important;
-          }
-        `}</style>
-      </Head>
-
-      <div className="bg-black min-h-screen flex flex-col">
-        <Navbar className="bg-black border-b border-gray-800" />
-        <main className="pt-16 flex-grow bg-black text-gray-200">{children}</main>
-        <Footer className="bg-black border-t border-gray-800" />
-      </div>
-    </>
-  );
+            {/* Mobile Navigation - Only visible on mobile and lg */}
+            {isOpen && (
+                <div className="xl:hidden bg-gray-900 border-t border-gray-800 overflow-hidden max-h-screen overflow-y-auto">
+                    <div className="container mx-auto px-4 py-3">
+                        <ul className="space-y-1">
+                            {navItems.map((item, index) => (
+                                <li key={item.id} className="py-1">
+                                    {item.hasDropdown ? (
+                                        <div>
+                                            <button
+                                                className={`flex items-center justify-between w-full py-2 font-medium hover:text-purple-400 focus:outline-none ${item.active ? 'text-purple-400' : 'text-gray-300'}`}
+                                                onClick={() => toggleDropdown(index)}
+                                            >
+                                                {item.name}
+                                                <ChevronDown
+                                                    size={16}
+                                                    className={`transition-transform duration-200 ease-in-out ${activeDropdown === index ? 'transform rotate-180' : ''}`}
+                                                />
+                                            </button>
+                                            {activeDropdown === index && (
+                                                <div className="pl-4 mt-2 border-l-2 border-purple-400">
+                                                    {/* Placeholder for dropdown content */}
+                                                    <p className="text-sm text-gray-400 py-2">Subcategories for {item.name} would appear here</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <Link
+                                            href={item.href}
+                                            className={`block py-2 font-medium hover:text-purple-400 ${item.active ? 'text-purple-400' : 'text-gray-300'}`}
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
+        </nav>
+    );
 };
 
-export default Layout;
+export default Navbar;

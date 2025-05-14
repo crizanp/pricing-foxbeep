@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { ArrowLeft, CheckCircle, HelpCircle, Info, FileText } from 'lucide-react';
 import Link from 'next/link';
 
@@ -120,7 +120,6 @@ const PackageDetailPage = ({ packageData }) => {
         <ArrowLeft className="w-5 h-5 mr-1" />
         <span className="font-medium">Back to Packages</span>
       </Link>
-
       {/* Header Section - Hero Style */}
       <div className="relative bg-gradient-to-r from-purple-700 to-purple-900 rounded-xl overflow-hidden mb-6 shadow-lg">
         <div className="absolute inset-0 bg-black/40 z-10"></div>
@@ -146,7 +145,6 @@ const PackageDetailPage = ({ packageData }) => {
           </div>
         </div>
       </div>
-      
       {/* Main Content Area - Two-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Tabs Content */}
@@ -307,23 +305,23 @@ const PackageDetailPage = ({ packageData }) => {
                       >
                         {isAdditionalService ? (
                           // Checkboxes for Additional Services
-                          <input
+                          (<input
                             type="checkbox"
                             id={`option-${categoryIndex}-${optionIndex}`}
                             checked={isSelected}
                             onChange={() => toggleAdditionalService(categoryIndex, optionIndex)}
                             className="h-5 w-5 text-purple-600 border-gray-300 cursor-pointer rounded focus:ring-purple-500"
-                          />
+                          />)
                         ) : (
                           // Radio buttons for other categories
-                          <input
+                          (<input
                             type="radio"
                             id={`option-${categoryIndex}-${optionIndex}`}
                             name={`category-${categoryIndex}`}
                             checked={isSelected}
                             onChange={() => handleRadioChange(categoryIndex, optionIndex)}
                             className="h-5 w-5 text-purple-600 border-gray-300 cursor-pointer rounded-full focus:ring-purple-500"
-                          />
+                          />)
                         )}
                         <label 
                           htmlFor={`option-${categoryIndex}-${optionIndex}`} 
