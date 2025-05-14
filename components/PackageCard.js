@@ -50,9 +50,9 @@ const PackageCard = ({ title, subtitle, price, image, features = [], deliveryTim
       
       {/* Card Footer */}
       <div className="p-5 pt-0 border-t border-gray-800 mt-auto">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between my-3">
           <div>
-            <span className="text-2xl font-bold text-purple-400">{price}</span>
+            <span className="text-2xl font-bold text-purple-400 py-4">{price}</span>
           </div>
         </div>
         
